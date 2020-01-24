@@ -1,0 +1,24 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', '${_CONTAINER_HOSTNAME}/$PROJECT_ID/${_SERVICE_NAME}', '.']
+
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "${_CONTAINER_HOSTNAME}/$PROJECT_ID/${_SERVICE_NAME}"]
+
+  - name: '${_CONTAINER_HOSTNAME}/$PROJECT_ID/${_SERVICE_NAME}'
+    args: ['make', 'tests']
+    env:
+    - 'CUSTOMER_SERVICE_URL=${_CUSTOMER_SERVICE_URL}'
+    - 'ACCOUNT_SERVICE_URL=${_ACCOUNT_SERVICE_URL}'
+    - 'CASHIER_SERVICE_URL=${_CASHIER_SERVICE_URL}'
+    - 'TRANSACTION_SERVICE_URL=${_TRANSACTION_SERVICE_URL}'
+    - 'BALANCE_SERVICE_URL=${_BALANCE_SERVICE_URL}'
+
+substitutions:
+  _CONTAINER_HOSTNAME: eu.gcr.io
+  _SERVICE_NAME: gcp-training-microservices-smoke-tests
+  _CUSTOMER_SERVICE_URL: https://localhost:5000/customer
+  _ACCOUNT_SERVICE_URL: https://localhost:5001/account
+  _CASHIER_SERVICE_URL: https://localhost:5002/cashier
+  _TRANSACTION_SERVICE_URL: https://localhost:5003/transaction
+  _BALANCE_SERVICE_URL: https://localhost:5004/balance
