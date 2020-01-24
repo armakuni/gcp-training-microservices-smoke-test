@@ -15,8 +15,6 @@ TRANSACTION_SERVICE_URL = os.getenv('TRANSACTION_SERVICE_URL', 'http://localhost
 def create_customer(context, name):
     (first_name, surname) = name.split(' ', 2)
     create_customer_request = dict(firstName=first_name, surname=surname)
-    print('Hello')
-    print(CUSTOMER_SERVICE_URL)
     response = requests.post(f'{CUSTOMER_SERVICE_URL}/customers/', json=create_customer_request)
 
     assert response.status_code == 201, response.status_code
